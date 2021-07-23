@@ -5,7 +5,7 @@
  */
 package com.zetcode.security;
 
-import com.zetcode.model.Role;
+
 import com.zetcode.model.User;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,21 +31,10 @@ public class MyUserDetails implements UserDetails {
         this.userName = user.getUserName();
         this.password = user.getPassword();
         this.active = user.isActive();
-        this.authorities = translate(user.getRoles());
+       // this.authorities = translate(user.getRoles());
     }
 
-    private Collection<? extends GrantedAuthority> translate(Set<Role> roles) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : roles) {
-             System.out.println("User roles"+role.getName());
-            String name = role.getName().toUpperCase();
-            if (!name.startsWith("ROLE_")) {
-                name = "ROLE_" + name;
-            }
-            authorities.add(new SimpleGrantedAuthority(name));
-        }
-        return authorities;
-    }
+ 
 
     public MyUserDetails() {
     }

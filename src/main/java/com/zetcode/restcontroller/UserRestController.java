@@ -82,10 +82,7 @@ public class UserRestController {
         if (user.getPassword() != null && (!(user.getPassword().equals("")))) {
             currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        if (user.getRoles() != null && !user.getRoles().isEmpty()) {
-
-            currentUser.setRoles(user.getRoles());
-        }
+       
         System.out.println("put called");
 }catch(Exception e){
     System.out.println(""+e.toString());

@@ -48,13 +48,7 @@ public class User implements Serializable {
 
     
 
-    @ManyToMany(targetEntity = Role.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-            )
-    private Set<Role> roles = new HashSet<>();   
+   
 
    
 
@@ -87,19 +81,12 @@ public class User implements Serializable {
 
 
     
-    @JsonIgnoreProperties(value = "users", allowSetters = true)
-    public Set<Role> getRoles() {
-        return roles;
-    }
+   
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public User(String userName, String password, Set<Role> roles) {
+    public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
-        this.roles = roles;
+        
     }
     
     @OneToMany(mappedBy = "user")
