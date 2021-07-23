@@ -22,7 +22,7 @@ public class WebController {
     
      @GetMapping("/")
     public String home1() {
-        return "/index";
+        return "index";
     }
 
    
