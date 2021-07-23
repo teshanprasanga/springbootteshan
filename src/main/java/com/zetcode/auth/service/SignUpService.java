@@ -38,7 +38,7 @@ public class SignUpService {
     @PostConstruct
     private void setupDefaultUser() {
         //-- just to make sure there is an ADMIN user exist in the database for testing purpose
-        if (userRepository.count() == 0) {
+     /*   if (userRepository.count() == 0) {
             System.out.println("creating default user");
             User u=new User();
             u.setUserName("user");
@@ -52,7 +52,7 @@ public class SignUpService {
             roles.add(role1);
             roles.add(role2);
             u.setRoles(roles);
-            userRepository.save(u);
+            userRepository.save(u);*/
             
 //           userRepository.save(new User("user",
 //                    passwordEncoder.encode("pass"),
@@ -60,6 +60,6 @@ public class SignUpService {
 //                            .collect(Collectors.toList())));
             
 
-        }
+        //}
 }
 }
