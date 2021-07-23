@@ -1,0 +1,4 @@
+## YAML Template.
+runtime: java8
+instance_class: F1
+
