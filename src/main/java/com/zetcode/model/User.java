@@ -35,6 +35,15 @@ public class User implements Serializable {
     @Column(unique = true)
     private String userName;
     private boolean active;
+    private String contactNo;
+
+    public String getContactNo() {
+        return contactNo;
+    }
+
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
 
     public boolean isActive() {
         return active;
@@ -47,10 +56,6 @@ public class User implements Serializable {
     private String password;
 
     
-
-   
-
-   
 
     public Long getId() {
         return id;
@@ -82,14 +87,14 @@ public class User implements Serializable {
 
     
    
-
-    public User(String userName, String password) {
+    public User(String userName, String password,String contactNo) {
         this.userName = userName;
         this.password = password;
-        
+        this.contactNo=contactNo;
+      
     }
     
-    @OneToMany(mappedBy = "user")
+   /* @OneToMany(mappedBy = "user")
     List<LoginHistory> loginHistoryArrayList=new ArrayList<>();
     
     private List<LoginHistory> getLoginHistoryArray(){
@@ -103,6 +108,6 @@ public class User implements Serializable {
         return (loginHistory!=null)?loginHistory.getLoginTime().toString()+"from IP"+loginHistory.getLoginIp():"";
     }
     
-    
+    */
     
 }

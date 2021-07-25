@@ -14,21 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
@@ -41,7 +37,7 @@ public class UserRestController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
+
     @Autowired
     private UserService userService;
 
@@ -56,6 +52,8 @@ public class UserRestController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    /*Retreiving User details for specified user id*/
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getUserById(@PathVariable("id") Long id) throws Exception {
         User user = userService.getUserById(id);
@@ -63,36 +61,40 @@ public class UserRestController {
             return new ResponseEntity(new Error("User with id" + id + " not found"), HttpStatus.NOT_FOUND);
 
         }
-
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    /*Update User information with ReuqestBody. JSON*/
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody User user) throws Exception {
-        User updatedUser=null;
-         User currentUser=null;
+        User updatedUser = null;
+        User currentUser = null;
         System.out.println("put called");
-        try{
-       currentUser = userService.getUserById(id);
-                  if (currentUser == null) {
-            return new ResponseEntity(new Error("Unable to update.User with id " + id + " not found."), HttpStatus.NOT_FOUND);
+        try {
+            currentUser = userService.getUserById(id);
+            if (currentUser == null) {
+                return new ResponseEntity(new Error("Unable to update.User with id " + id + " not found."), HttpStatus.NOT_FOUND);
+            }
+
+            currentUser.setUserName(user.getUserName());
+            if (user.getPassword() != null && (!(user.getPassword().equals("")))) {
+                currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
+            if (user.getContactNo() != null && (!(user.getContactNo().equals("")))) {
+                currentUser.setContactNo(user.getContactNo());
+            }
+
+            System.out.println("put called");
+        } catch (Exception e) {
+            System.out.println("" + e.toString());
         }
-     
-        currentUser.setUserName(user.getUserName());
-        if (user.getPassword() != null && (!(user.getPassword().equals("")))) {
-            currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-       
-        System.out.println("put called");
-}catch(Exception e){
-    System.out.println(""+e.toString());
-}
-      updatedUser = userService.updateUser(currentUser);
+        updatedUser = userService.updateUser(currentUser);
 
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
 
     }
 
+    /*Insert a new User with RequestBody*/
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> post(@RequestBody User u, UriComponentsBuilder ucBuilder) throws Exception {
         System.out.println("call for insert user, User name" + u.getUserName());
@@ -113,6 +115,7 @@ public class UserRestController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 
+    /*delete a user specifying user Id*/
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) throws Exception {
         System.out.println("called delete method" + id);
         User user = userService.getUserById(id);
@@ -125,7 +128,14 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-@ExceptionHandler(UserException.class)
+//    @RequestMapping(Model model, value = "/myprofile", method = RequestMethod.GET)
+//    public ResponseEntity<?> getLoggedUserDetails() throws Exception {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        return new ResponseEntity<>(userService.getUserByUserName(auth.getName()), HttpStatus.OK);
+//
+//    }
+    /*Exception handler*/
+    @ExceptionHandler(UserException.class)
     public ResponseEntity<ErrorResponse> exceptionHandler(Exception ex) {
         ErrorResponse error = new ErrorResponse();
         error.setErrorCode(HttpStatus.PRECONDITION_FAILED.value());

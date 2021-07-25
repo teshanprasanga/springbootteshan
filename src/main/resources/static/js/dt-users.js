@@ -1,13 +1,15 @@
 
+/* User management implemented through datatables, JQuery plugin
+ * https://datatables.net/
+ * 
+ * */
+
 
 var editor1;
 $(document).ready(function () {
-
-
     editor1 = new $.fn.dataTable.Editor({
         ajax: {
             create: {
-
                 type: 'POST',
 
                 url: "/api/users", contentType: "application/json",
@@ -22,7 +24,7 @@ $(document).ready(function () {
 
                         "userName": $("#DTE_Field_userName").val(),
                         "password": $('#DTE_Field_password').val(),
-                        "roles": myList
+                        "contactNo": $('#DTE_Field_contactNo').val(),
 
                     });
                 },
@@ -53,9 +55,9 @@ $(document).ready(function () {
                     });
                     return JSON.stringify({
                         "userName": $("#DTE_Field_userName").val(),
-                        "password": $('#DTE_Field_password ').val(),
-                        "roles": myList
-
+                        "password": $('#DTE_Field_password').val(),
+                         "contactNo": $('#DTE_Field_contactNo').val(),
+                        
                     });
 
                 },
@@ -93,9 +95,12 @@ $(document).ready(function () {
 
 
 
+            },{
+                label: "Contact No",
+                name: "contactNo"
             },
 
-            {
+            /*{
                 "label": "User Roles:",
                 "name": "roles[].id",
                 "type": "select",
@@ -111,7 +116,7 @@ $(document).ready(function () {
 
 
 
-            }
+            }*/
         ], error: function (e) {
             console.log(e);
         }
@@ -130,7 +135,7 @@ $(document).ready(function () {
         "order": [[0, "asc"]],
         "columns": [
             {"data": "userName", "defaultContent": ""},
-            {"data": "roles", render: "[, ].name"}
+            {"data": "contactNo", "defaultContent": ""}
         ], select: true
     });
 

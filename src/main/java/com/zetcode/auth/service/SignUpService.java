@@ -5,7 +5,6 @@
  */
 package com.zetcode.auth.service;
 
-
 import com.zetcode.model.User;
 
 import com.zetcode.repository.UserRepository;
@@ -24,34 +23,24 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class SignUpService {
-    
+
     @Autowired
     UserRepository userRepository;
-   
-    
+
     @Autowired
     PasswordEncoder passwordEncoder;
-    
-    
+
     @PostConstruct
     private void setupDefaultUser() {
         //-- just to make sure there is an ADMIN user exist in the database for testing purpose
         if (userRepository.count() == 0) {
             System.out.println("creating default user");
-            User u=new User();
+            User u = new User();
             u.setUserName("user");
-            u.setPassword( passwordEncoder.encode("pass"));
-           
-            
-          
+            u.setPassword(passwordEncoder.encode("pass"));
+
             userRepository.save(u);
-            
-//           userRepository.save(new User("user",
-//                    passwordEncoder.encode("pass"),
-//                    Stream.of(new Role("USER"), new Role("ADMIN"))
-//                            .collect(Collectors.toList())));
-            
 
         }
-}
+    }
 }

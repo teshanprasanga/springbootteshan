@@ -6,7 +6,6 @@
 package com.zetcode.security;
 
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
