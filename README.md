@@ -1,4 +1,4 @@
 # springbootteshan
 
-Apllicatin URL
+Application URL
 https://springbootteshan.herokuapp.com
