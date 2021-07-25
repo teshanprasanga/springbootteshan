@@ -15,11 +15,7 @@ $(document).ready(function () {
                 url: "/api/users", contentType: "application/json",
                 dataType: 'json',
                 data: function (d) {
-                    myList = [];
-                    $('#DTE_Field_roles\\[\\]-id option:selected').each(function () {
-                        myList.push({"id": $(this).val(), "name": $(this).text()});
-                    });
-                    console.log(JSON.stringify(myList));
+                   
                     return JSON.stringify({
 
                         "userName": $("#DTE_Field_userName").val(),
@@ -29,7 +25,7 @@ $(document).ready(function () {
                     });
                 },
                 success: function (response) {
-                    alert(response);
+                 
                     $('#usersTable').DataTable().ajax.reload();
                 },
                 error: function (msg) {
@@ -49,14 +45,11 @@ $(document).ready(function () {
                 url: "/api/users/" + "_id_",
                 data: function (d) {
 
-                    myList = [];
-                    $('#DTE_Field_roles\\[\\]-id option:selected').each(function () {
-                        myList.push({'id': $(this).val(), 'name': $(this).text()});
-                    });
+                   
                     return JSON.stringify({
                         "userName": $("#DTE_Field_userName").val(),
                         "password": $('#DTE_Field_password').val(),
-                         "contactNo": $('#DTE_Field_contactNo').val(),
+                         "contactNo": $('#DTE_Field_contactNo').val()
                         
                     });
 
